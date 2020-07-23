@@ -1,2 +1,2 @@
 # AutoEncoder_Pytorch
-The Pytorch implementation of AntuEncoder
+The Pytorch implementation of AutoEncoder
