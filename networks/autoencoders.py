@@ -45,38 +45,39 @@ class AutoEncoder(nn.Module):
         self.conv1 = BasicBlock(64, 64)
         self.conv2 = BasicBlock(128, 128)
         self.conv3 = BasicBlock(512 ,512)
+        self.conv4 = conv1x1()
         self.linear = nn.Linear(16*16*1024, 2048)
         self.linear2 = nn.Linear(2048, 16*16*1024)
 
     
     def forward(self, x):
         x = conv3x3(3, 64)(x)
-        x = Maxpooling(x) #64,128
+        x = Maxpooling()(x) #64,128
         x = self.conv1(x) #64,128
-        x = conv1x1(64, 128) #128, 128
-        x = Maxpooling(x) #128, 64
+        x = conv1x1(64, 128)(x) #128, 128
+        x = Maxpooling()(x) #128, 64
         x = self.conv2(x) #128, 64
-        x = conv1x1(128, 512) #512, 64
-        x = Maxpooling(x) #512, 32
+        x = conv1x1(128, 512)(x) #512, 64
+        x = Maxpooling()(x) #512, 32
         x = self.conv3(x) #512, 32
-        x = conv1x1(512, 1024) #1024, 32
-        x = Maxpooling(x) #1024, 16
+        x = conv1x1(512, 1024)(x) #1024, 32
+        x = Maxpooling()(x) #1024, 16
         x = x.view(x.size(0), -1)
 
         encoded = self.linear(x)
         
         x = self.linear2(encoded)
         x = x.view(-1, 1024, 16, 16)
-        x = Upsample(x)
-        x = conv1x1(1024, 512) #512, 32
+        x = Upsample()(x)
+        x = conv1x1(1024, 512)(x) #512, 32
         x = self.conv3(x) #512, 32
-        x = Upsample(x) #512, 64
-        x = conv1x1(512, 128) #128, 64
+        x = Upsample()(x) #512, 64
+        x = conv1x1(512, 128)(x) #128, 64
         x = self.conv2(x) #128, 64
-        x = Upsample(x) #128, 128
-        x = conv1x1(128, 64) #64, 128
+        x = Upsample()(x) #128, 128
+        x = conv1x1(128, 64)(x) #64, 128
         x = self.conv1(x) #64, 128
-        x = Upsample(x) #64, 256
+        x = Upsample()(x) #64, 256
         decoded = conv3x3(64, 3)(x)
 
 
