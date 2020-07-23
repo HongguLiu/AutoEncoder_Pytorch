@@ -5,8 +5,6 @@ from networks.autoencoders import AutoEncoder
 import pdb
 from datasets import MyDataset
 
-input_dim = 28*28
-hidden_dim = 64
 num_epoches = 100
 batch_size = 128
 
@@ -21,10 +19,10 @@ val_data = MyDataset(txt_path="../Non-local_pytorch/mnist", train=False, transfo
 train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
 val_loader = torch.utils.data.DataLoader(dataset=val_data, batch_size=batch_size, shuffle=False)
 
-net = AutoEncoder(input_dim, hidden_dim)
+net = AutoEncoder(input_dim=256)
 net.cuda()
 criterion = torch.nn.L1Loss()
-optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(net.parameters(), lr=0.0001)
 
 for epoch in range(num_epoches):
     for i, (images) in enumerate(train_loader):

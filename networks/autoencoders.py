@@ -40,7 +40,7 @@ class BasicBlock(nn.Module):
 
 
 class AutoEncoder(nn.Module):
-    def __init__(self, input_dim):
+    def __init__(self):
         super(AutoEncoder, self).__init__()
         self.conv1 = BasicBlock(64, 64)
         self.conv2 = BasicBlock(128, 128)
@@ -82,32 +82,4 @@ class AutoEncoder(nn.Module):
 
 
 
-        return encoded, decoded
-
-
-
-class AutoEncoder_mnist(nn.Module):
-    def __init__(self, input_dim, hidden_dim):
-        super(AutoEncoder_mnist, self).__init__()
-        self.encoder1 = torch.nn.Linear(input_dim, 14*14)
-        self.encoder2 = torch.nn.Linear(14*14, 32)
-        self.encoder3 = torch.nn.Linear(32, hidden_dim)
-        self.relu = torch.nn.ReLU()
-
-        self.decoder1 = torch.nn.Linear(hidden_dim, 32)
-        self.decoder2 = torch.nn.Linear(32, 14*14)
-        self.decoder3 = torch.nn.Linear(14*14, input_dim)
-        self.sigmoid = torch.nn.Sigmoid()
-    
-    def forward(self, x):
-        x = self.encoder1(x)
-        #x = self.relu(x)
-        x = self.encoder2(x)
-        #x = self.relu(x)
-        x = self.encoder3(x)
-        encoded = self.relu(x)
-        x = self.decoder1(encoded)
-        x = self.decoder2(x)
-        x = self.decoder3(x)
-        decoded = self.sigmoid(x)
         return encoded, decoded
